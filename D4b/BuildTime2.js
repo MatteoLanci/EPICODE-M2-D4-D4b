@@ -10,11 +10,6 @@ In entrambi i casi, la spedizione è gratuita per ogni carrello con costo superi
 
 In basso troverai degli esempi di utenti, una lista prezzi e un costo fisso di spedizione.
 */
-const prices = [34, 5, 2];
-const shippingCost = 50;
-const minDiscount = 100;
-let totalCost;
-let ambassadorDiscount = 0.7;
 
 let user = [
   {
@@ -36,20 +31,32 @@ let user = [
   },
 ];
 
-const add = (prices) => prices.reduce((a, b) => a + b, 0);
-let sum = add(prices);
+const prices = [34, 5, 2]; //! CHANGE ARRAY VALUES IN ORDER TO CHANGE SHOPPING CART VALUE AND BE ABLE TO AVOID SHIPPING COSTS;
+const shippingCost = 50;
+const minDiscount = 100;
+let totalCost;
+let ambassadorDiscount = 0.7;
+let shoppingCart = 0;
 
-console.log(sum + " : this is the value of the cart");
+let loggedUser = user[2]; //! CHANGE NUMBER INSIDE '[]' IN ORDER TO SWITCH USER;
+console.log(`${loggedUser.name} ${loggedUser.lastName} : login verified`);
+
+for (let i = 0; i < prices.length; i++) {
+  shoppingCart += prices[i];
+}
+console.log(`${shoppingCart} : this is the value of the cart`);
 
 let n = 0;
 
-if (sum > minDiscount && user[n].isAmbassador) {
-  totalCost = (sum * ambassadorDiscount).toFixed(2);
-} else if (sum <= minDiscount && user[n].isAmbassador) {
-  totalCost = (sum * ambassadorDiscount + shippingCost).toFixed(2);
-} else if (sum > minDiscount && !user[n].isAmbassador) {
-  totalCost = sum.toFixed(2);
+if (shoppingCart > minDiscount && loggedUser.isAmbassador) {
+  totalCost = (shoppingCart * ambassadorDiscount).toFixed(2); //AMBASSADOR VERIFIED, NO SHIPPING COSTS;
+} else if (shoppingCart <= minDiscount && loggedUser.isAmbassador) {
+  totalCost = (shoppingCart * ambassadorDiscount + shippingCost).toFixed(2); //AMBASSADOR VERIFIED + SHIPPING COSTS;
+} else if (shoppingCart > minDiscount && !loggedUser.isAmbassador) {
+  totalCost = shoppingCart.toFixed(2); //NOT AMBASSADOR, NO SHIPPING COSTS;
 } else {
-  totalCost = (sum + shippingCost).toFixed(2);
+  totalCost = (shoppingCart + shippingCost).toFixed(2); //NOT AMBASSADOR + SHIPPING COSTS;
 }
-console.log(totalCost);
+console.log(
+  `You're almost there ${loggedUser.name}! your purchase amount is ${totalCost} $USD. Let's proceed to checkout`
+);
